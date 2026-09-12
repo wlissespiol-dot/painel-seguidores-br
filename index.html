@@ -1,258 +1,413 @@
-index.html<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Painel Seguidores BR</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <style>
-    * {
-      box-sizing: border-box;
-      font-family: Arial, sans-serif;
-    }
+<title>Painel Seguidores BR</title>
 
-    body {
-      margin: 0;
-      background: #0b0b0b;
-      color: white;
-    }
+<style>
+* {
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
 
-    header {
-      background: #151515;
-      padding: 20px;
-      text-align: center;
-      border-bottom: 1px solid #d4af37;
-    }
+body {
+    margin: 0;
+    background: #0b0b0b;
+    color: white;
+}
 
-    header h1 {
-      margin: 0;
-      color: #d4af37;
-    }
+header {
+    background: #151515;
+    padding: 20px;
+    text-align: center;
+    border-bottom: 1px solid #d4af37;
+}
 
-    header p {
-      color: #aaa;
-    }
+header h1 {
+    margin: 0;
+    color: #d4af37;
+}
 
-    .container {
-      max-width: 1000px;
-      margin: auto;
-      padding: 20px;
-    }
+header p {
+    color: #aaa;
+}
 
-    .cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 15px;
-      margin-bottom: 25px;
-    }
+.container {
+    max-width: 1000px;
+    margin: auto;
+    padding: 20px;
+}
 
-    .card {
-      background: #151515;
-      padding: 20px;
-      border-radius: 12px;
-      border: 1px solid #292929;
-    }
+.cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 15px;
+    margin-bottom: 25px;
+}
 
-    .card h3 {
-      color: #aaa;
-      margin-top: 0;
-    }
+.card {
+    background: #151515;
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid #292929;
+}
 
-    .card strong {
-      font-size: 28px;
-      color: #d4af37;
-    }
+.card h3 {
+    color: #aaa;
+    margin-top: 0;
+}
 
-    .box {
-      background: #151515;
-      padding: 20px;
-      border-radius: 12px;
-      margin-bottom: 20px;
-      border: 1px solid #292929;
-    }
+.card strong {
+    font-size: 28px;
+    color: #d4af37;
+}
 
-    h2 {
-      color: #d4af37;
-    }
+.box {
+    background: #151515;
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    border: 1px solid #292929;
+}
 
-    input, select, button {
-      width: 100%;
-      padding: 13px;
-      margin: 7px 0;
-      border-radius: 8px;
-      border: none;
-      font-size: 15px;
-    }
+h2 {
+    color: #d4af37;
+}
 
-    input, select {
-      background: #242424;
-      color: white;
-    }
+input,
+select,
+button {
+    width: 100%;
+    padding: 13px;
+    margin: 7px 0;
+    border-radius: 8px;
+    border: none;
+    font-size: 15px;
+}
 
-    button {
-      background: #d4af37;
-      color: #000;
-      font-weight: bold;
-      cursor: pointer;
-    }
+input,
+select {
+    background: #242424;
+    color: white;
+}
 
-    button:hover {
-      background: #f0c94b;
-    }
+button {
+    background: #d4af37;
+    color: #000;
+    font-weight: bold;
+    cursor: pointer;
+}
 
-    .pedido {
-      background: #202020;
-      padding: 15px;
-      margin-top: 10px;
-      border-radius: 8px;
-    }
+button:hover {
+    background: #f0c94b;
+}
 
-    .pedido span {
-      color: #d4af37;
-    }
+.pedido {
+    background: #202020;
+    padding: 15px;
+    margin-top: 10px;
+    border-radius: 8px;
+}
 
-    .excluir {
-      background: #a83232;
-      color: white;
-      margin-top: 10px;
-    }
-  </style>
+.pedido span {
+    color: #d4af37;
+}
+
+.excluir {
+    background: #a83232;
+    color: white;
+    margin-top: 10px;
+}
+
+.excluir:hover {
+    background: #c43d3d;
+}
+</style>
+
 </head>
 
 <body>
 
 <header>
-  <h1>👑 PAINEL SEGUIDORES BR</h1>
-  <p>Gerenciamento de pedidos</p>
+
+<h1>👑 PAINEL SEGUIDORES BR</h1>
+
+<p>Gerenciamento de pedidos</p>
+
 </header>
 
 <div class="container">
 
-  <div class="cards">
-    <div class="card">
-      <h3>Pedidos</h3>
-      <strong id="total">0</strong>
-    </div>
+<div class="cards">
 
-    <div class="card">
-      <h3>Pendentes</h3>
-      <strong id="pendentes">0</strong>
-    </div>
+<div class="card">
+<h3>Pedidos</h3>
+<strong id="total">0</strong>
+</div>
 
-    <div class="card">
-      <h3>Concluídos</h3>
-      <strong id="concluidos">0</strong>
-    </div>
-  </div>
+<div class="card">
+<h3>Pendentes</h3>
+<strong id="pendentes">0</strong>
+</div>
 
-  <div class="box">
-    <h2>➕ Novo Pedido</h2>
-
-    <input id="cliente" placeholder="Nome do cliente">
-
-    <input id="instagram" placeholder="Link do Instagram">
-
-    <select id="servico">
-      <option value="Seguidores Brasileiros">Seguidores Brasileiros</option>
-      <option value="Curtidas">Curtidas</option>
-    </select>
-
-    <input id="quantidade" type="number" placeholder="Quantidade">
-
-    <input id="valor" type="number" step="0.01" placeholder="Valor R$">
-
-    <select id="status">
-      <option value="Pendente">Pendente</option>
-      <option value="Concluído">Concluído</option>
-    </select>
-
-    <button onclick="adicionarPedido()">ADICIONAR PEDIDO</button>
-  </div>
-
-  <div class="box">
-    <h2>📋 Pedidos</h2>
-    <div id="lista"></div>
-  </div>
+<div class="card">
+<h3>Concluídos</h3>
+<strong id="concluidos">0</strong>
+</div>
 
 </div>
 
+
+<div class="box">
+
+<h2>➕ Novo Pedido</h2>
+
+<input
+id="cliente"
+placeholder="Nome do cliente"
+>
+
+<input
+id="instagram"
+placeholder="Link do Instagram"
+>
+
+<select id="servico">
+
+<option value="Seguidores Brasileiros">
+Seguidores Brasileiros
+</option>
+
+<option value="Curtidas">
+Curtidas
+</option>
+
+</select>
+
+<input
+id="quantidade"
+type="number"
+placeholder="Quantidade"
+>
+
+<input
+id="valor"
+type="number"
+step="0.01"
+placeholder="Valor R$"
+>
+
+<select id="status">
+
+<option value="Pendente">
+Pendente
+</option>
+
+<option value="Concluído">
+Concluído
+</option>
+
+</select>
+
+<button onclick="adicionarPedido()">
+ADICIONAR PEDIDO
+</button>
+
+</div>
+
+
+<div class="box">
+
+<h2>📋 Pedidos</h2>
+
+<div id="lista"></div>
+
+</div>
+
+</div>
+
+
 <script>
-  let pedidos = JSON.parse(localStorage.getItem("pedidos")) || [];
 
-  function salvar() {
-    localStorage.setItem("pedidos", JSON.stringify(pedidos));
-  }
+let pedidos =
+JSON.parse(localStorage.getItem("pedidos")) || [];
 
-  function adicionarPedido() {
-    const cliente = document.getElementById("cliente").value;
-    const instagram = document.getElementById("instagram").value;
-    const servico = document.getElementById("servico").value;
-    const quantidade = document.getElementById("quantidade").value;
-    const valor = document.getElementById("valor").value;
-    const status = document.getElementById("status").value;
 
-    if (!cliente || !instagram || !quantidade || !valor) {
-      alert("Preencha todos os campos.");
-      return;
-    }
+function salvar() {
 
-    pedidos.push({
-      cliente,
-      instagram,
-      servico,
-      quantidade,
-      valor,
-      status
-    });
+localStorage.setItem(
+"pedidos",
+JSON.stringify(pedidos)
+);
 
-    salvar();
+}
 
-    document.getElementById("cliente").value = "";
-    document.getElementById("instagram").value = "";
-    document.getElementById("quantidade").value = "";
-    document.getElementById("valor").value = "";
 
-    atualizar();
-  }
+function adicionarPedido() {
 
-  function excluirPedido(index) {
-    pedidos.splice(index, 1);
-    salvar();
-    atualizar();
-  }
+const cliente =
+document.getElementById("cliente").value;
 
-  function atualizar() {
-    const lista = document.getElementById("lista");
+const instagram =
+document.getElementById("instagram").value;
 
-    lista.innerHTML = "";
+const servico =
+document.getElementById("servico").value;
 
-    pedidos.forEach((pedido, index) => {
-      lista.innerHTML += `
-        <div class="pedido">
-          👤 <strong>${pedido.cliente}</strong><br>
-          📸 ${pedido.instagram}<br>
-          📦 ${pedido.servico}<br>
-          🔢 Quantidade: <span>${pedido.quantidade}</span><br>
-          💰 Valor: <span>R$ ${pedido.valor}</span><br>
-          📌 Status: <span>${pedido.status}</span>
+const quantidade =
+document.getElementById("quantidade").value;
 
-          <button class="excluir" onclick="excluirPedido(${index})">
-            EXCLUIR
-          </button>
-        </div>
-      `;
-    });
+const valor =
+document.getElementById("valor").value;
 
-    document.getElementById("total").innerText = pedidos.length;
+const status =
+document.getElementById("status").value;
 
-    document.getElementById("pendentes").innerText =
-      pedidos.filter(p => p.status === "Pendente").length;
 
-    document.getElementById("concluidos").innerText =
-      pedidos.filter(p => p.status === "Concluído").length;
-  }
+if (
+!cliente ||
+!instagram ||
+!quantidade ||
+!valor
+) {
 
-  atualizar();
+alert("Preencha todos os campos.");
+
+return;
+
+}
+
+
+pedidos.push({
+
+cliente: cliente,
+
+instagram: instagram,
+
+servico: servico,
+
+quantidade: quantidade,
+
+valor: valor,
+
+status: status
+
+});
+
+
+salvar();
+
+
+document.getElementById("cliente").value = "";
+
+document.getElementById("instagram").value = "";
+
+document.getElementById("quantidade").value = "";
+
+document.getElementById("valor").value = "";
+
+
+atualizar();
+
+}
+
+
+function excluirPedido(index) {
+
+pedidos.splice(index, 1);
+
+salvar();
+
+atualizar();
+
+}
+
+
+function atualizar() {
+
+const lista =
+document.getElementById("lista");
+
+lista.innerHTML = "";
+
+
+pedidos.forEach((pedido, index) => {
+
+lista.innerHTML += `
+
+<div class="pedido">
+
+👤 <strong>
+${pedido.cliente}
+</strong>
+
+<br>
+
+📸 ${pedido.instagram}
+
+<br>
+
+📦 ${pedido.servico}
+
+<br>
+
+🔢 Quantidade:
+<span>
+${pedido.quantidade}
+</span>
+
+<br>
+
+💰 Valor:
+<span>
+R$ ${pedido.valor}
+</span>
+
+<br>
+
+📌 Status:
+<span>
+${pedido.status}
+</span>
+
+<button
+class="excluir"
+onclick="excluirPedido(${index})"
+>
+
+EXCLUIR
+
+</button>
+
+</div>
+
+`;
+
+});
+
+
+document.getElementById("total").innerText =
+pedidos.length;
+
+
+document.getElementById("pendentes").innerText =
+pedidos.filter(
+p => p.status === "Pendente"
+).length;
+
+
+document.getElementById("concluidos").innerText =
+pedidos.filter(
+p => p.status === "Concluído"
+).length;
+
+}
+
+
+atualizar();
+
 </script>
 
 </body>
