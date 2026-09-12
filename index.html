@@ -50,6 +50,319 @@ button{
   background:#d4af37;
   color:#000;
   font-weight:bold;
+  cursor:pointer;
+}
+
+.pedido{
+  background:#222;
+  padding:15px;
+  border-radius:10px;
+  margin-top:12px;
+}
+
+.whatsapp{
+  background:#25D366;
+  color:white;
+}
+
+.excluir{
+  background:#b00020;
+  color:white;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>👑 PAINEL SEGUIDORES BR</h1>
+<p style="text-align:center;">Gerenciamento de pedidos</p>
+
+<div class="card">
+<h2>📊 Resumo</h2>
+<p>Pedidos: <strong id="total">0</strong></p>
+<p>Pendentes: <strong id="pendentes">0</strong></p>
+<p>Concluídos: <strong id="concluidos">0</strong></p>
+</div>
+
+<div class="card">
+
+<h2>➕ Novo Pedido</h2>
+
+<input id="nome" placeholder="Nome do cliente">
+
+<input id="link" placeholder="Link do Instagram">
+
+<select id="servico" onchange="mostrarQuantidades()">
+<option value="">Selecione o serviço</option>
+<option value="Curtidas">❤️ Curtidas</option>
+<option value="Seguidores Brasileiros">🇧🇷 Seguidores Brasileiros</option>
+</select>
+
+<select id="quantidade" onchange="mostrarValor()">
+<option value="">Selecione a quantidade</option>
+</select>
+
+<input id="valor" placeholder="Valor R$" readonly>
+
+<select id="status">
+<option value="Pendente">Pendente</option>
+<option value="Concluído">Concluído</option>
+</select>
+
+<button onclick="adicionarPedido()">ADICIONAR PEDIDO</button>
+
+</div>
+
+<div class="card">
+<h2>📋 Pedidos</h2>
+<div id="lista"></div>
+</div>
+
+</div>
+
+<script>
+
+const precos = {
+
+  "Curtidas":{
+    1000:10,
+    2000:20,
+    3000:30,
+    4000:40
+  },
+
+  "Seguidores Brasileiros":{
+    1000:21.99,
+    2000:31.99,
+    3000:41.99,
+    4000:62.99
+  }
+
+};
+
+let pedidos = JSON.parse(localStorage.getItem("pedidos")) || [];
+
+
+// MOSTRAR QUANTIDADES
+function mostrarQuantidades(){
+
+  const servico = document.getElementById("servico").value;
+  const quantidade = document.getElementById("quantidade");
+  const valor = document.getElementById("valor");
+
+  quantidade.innerHTML =
+    '<option value="">Selecione a quantidade</option>';
+
+  valor.value = "";
+
+  if(!servico || !precos[servico]){
+    return;
+  }
+
+  Object.keys(precos[servico]).forEach(qtd => {
+
+    const option = document.createElement("option");
+
+    option.value = qtd;
+    option.textContent =
+      Number(qtd).toLocaleString("pt-BR") + " unidades";
+
+    quantidade.appendChild(option);
+
+  });
+
+}
+
+
+// MOSTRAR VALOR AUTOMATICAMENTE
+function mostrarValor(){
+
+  const servico = document.getElementById("servico").value;
+  const quantidade = document.getElementById("quantidade").value;
+  const valor = document.getElementById("valor");
+
+  if(servico && quantidade){
+
+    const preco = precos[servico][quantidade];
+
+    valor.value = preco.toLocaleString("pt-BR", {
+      style:"currency",
+      currency:"BRL"
+    });
+
+  }else{
+
+    valor.value = "";
+
+  }
+
+}
+
+
+// ADICIONAR PEDIDO
+function adicionarPedido(){
+
+  const nome = document.getElementById("nome").value.trim();
+  const link = document.getElementById("link").value.trim();
+  const servico = document.getElementById("servico").value;
+  const quantidade = document.getElementById("quantidade").value;
+  const valor = document.getElementById("valor").value;
+  const status = document.getElementById("status").value;
+
+  if(!nome || !link || !servico || !quantidade){
+
+    alert("Preencha todos os campos.");
+    return;
+
+  }
+
+  const pedido = {
+
+    id:Date.now(),
+    nome:nome,
+    link:link,
+    servico:servico,
+    quantidade:Number(quantidade),
+    valor:valor,
+    status:status
+
+  };
+
+  pedidos.push(pedido);
+
+  salvar();
+
+  document.getElementById("nome").value = "";
+  document.getElementById("link").value = "";
+  document.getElementById("servico").value = "";
+  document.getElementById("quantidade").innerHTML =
+    '<option value="">Selecione a quantidade</option>';
+  document.getElementById("valor").value = "";
+
+  mostrarPedidos();
+
+}
+
+
+// SALVAR
+function salvar(){
+
+  localStorage.setItem(
+    "pedidos",
+    JSON.stringify(pedidos)
+  );
+
+}
+
+
+// MOSTRAR PEDIDOS
+function mostrarPedidos(){
+
+  const lista = document.getElementById("lista");
+
+  lista.innerHTML = "";
+
+  pedidos.forEach(pedido => {
+
+    const div = document.createElement("div");
+
+    div.className = "pedido";
+
+    div.innerHTML = `
+
+      <strong>👤 ${pedido.nome}</strong>
+
+      <p>📱 Serviço: ${pedido.servico}</p>
+
+      <p>📦 Quantidade:
+      ${pedido.quantidade.toLocaleString("pt-BR")}
+      </p>
+
+      <p>💰 Valor: ${pedido.valor}</p>
+
+      <p>🔗 Instagram:
+      <a href="${pedido.link}"
+      target="_blank"
+      style="color:#d4af37;">
+      ${pedido.link}
+      </a>
+      </p>
+
+      <p>📌 Status: ${pedido.status}</p>
+
+      <button
+      class="excluir"
+      onclick="excluirPedido(${pedido.id})">
+      EXCLUIR
+      </button>
+
+    `;
+
+    lista.appendChild(div);
+
+  });
+
+  atualizarResumo();
+
+}
+
+
+// EXCLUIR PEDIDO
+function excluirPedido(id){
+
+  if(confirm("Deseja excluir este pedido?")){
+
+    pedidos =
+      pedidos.filter(pedido => pedido.id !== id);
+
+    salvar();
+
+    mostrarPedidos();
+
+  }
+
+}
+
+
+// RESUMO
+function atualizarResumo(){
+
+  document.getElementById("total").textContent =
+    pedidos.length;
+
+  document.getElementById("pendentes").textContent =
+    pedidos.filter(p => p.status === "Pendente").length;
+
+  document.getElementById("concluidos").textContent =
+    pedidos.filter(p => p.status === "Concluído").length;
+
+}
+
+
+// INICIAR
+mostrarPedidos();
+
+</script>
+
+</body>
+</html>  margin-top:8px;
+  margin-bottom:12px;
+  border-radius:8px;
+  border:none;
+  font-size:16px;
+}
+
+input,select{
+  background:#292929;
+  color:white;
+}
+
+button{
+  background:#d4af37;
+  color:#000;
+  font-weight:bold;
 }
 
 .pedido{
