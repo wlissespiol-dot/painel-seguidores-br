@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Painel Seguidores BR</title>
 
 <style>
@@ -76,12 +75,336 @@ h2 {
     color: #d4af37;
 }
 
-input,
-select,
-button {
+input, select, button {
     width: 100%;
     padding: 13px;
     margin: 7px 0;
+    border-radius: 8px;
+    border: none;
+    font-size: 15px;
+}
+
+input, select {
+    background: #242424;
+    color: white;
+}
+
+#valor {
+    background: #181818;
+    color: #d4af37;
+    font-weight: bold;
+}
+
+button {
+    background: #d4af37;
+    color: #000;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #f0c94b;
+}
+
+.pedido {
+    background: #202020;
+    padding: 15px;
+    margin-top: 10px;
+    border-radius: 8px;
+}
+
+.pedido span {
+    color: #d4af37;
+}
+
+.excluir {
+    background: #a83232;
+    color: white;
+    margin-top: 10px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>👑 PAINEL SEGUIDORES BR</h1>
+<p>Gerenciamento de pedidos</p>
+</header>
+
+<div class="container">
+
+<div class="cards">
+
+<div class="card">
+<h3>Pedidos</h3>
+<strong id="total">0</strong>
+</div>
+
+<div class="card">
+<h3>Pendentes</h3>
+<strong id="pendentes">0</strong>
+</div>
+
+<div class="card">
+<h3>Concluídos</h3>
+<strong id="concluidos">0</strong>
+</div>
+
+</div>
+
+<div class="box">
+
+<h2>➕ Novo Pedido</h2>
+
+<input id="cliente" placeholder="Nome do cliente">
+
+<input id="instagram" placeholder="Link do Instagram">
+
+<select id="servico" onchange="calcularValor()">
+<option value="Seguidores Brasileiros">Seguidores Brasileiros</option>
+<option value="Curtidas">Curtidas</option>
+</select>
+
+<input
+id="quantidade"
+type="number"
+placeholder="Quantidade"
+oninput="calcularValor()"
+>
+
+<input
+id="valor"
+type="text"
+placeholder="Valor R$"
+readonly
+>
+
+<select id="status">
+<option value="Pendente">Pendente</option>
+<option value="Concluído">Concluído</option>
+</select>
+
+<button onclick="adicionarPedido()">
+ADICIONAR PEDIDO
+</button>
+
+</div>
+
+<div class="box">
+
+<h2>📋 Pedidos</h2>
+
+<div id="lista"></div>
+
+</div>
+
+</div>
+
+<script>
+
+let pedidos = JSON.parse(localStorage.getItem("pedidos")) || [];
+
+
+/* CALCULAR PREÇO AUTOMATICAMENTE */
+
+function calcularValor() {
+
+    const servico = document.getElementById("servico").value;
+    const quantidade = Number(
+        document.getElementById("quantidade").value
+    );
+
+    let valor = 0;
+
+    if (servico === "Curtidas") {
+
+        if (quantidade === 1000) valor = 10;
+        if (quantidade === 2000) valor = 20;
+        if (quantidade === 3000) valor = 30;
+        if (quantidade === 4000) valor = 40;
+
+    }
+
+    if (servico === "Seguidores Brasileiros") {
+
+        if (quantidade === 1000) valor = 19.99;
+        if (quantidade === 2000) valor = 29.99;
+        if (quantidade === 3000) valor = 39.99;
+        if (quantidade === 4000) valor = 49.99;
+
+    }
+
+    if (valor > 0) {
+
+        document.getElementById("valor").value =
+            "R$ " + valor.toFixed(2).replace(".", ",");
+
+    } else {
+
+        document.getElementById("valor").value = "";
+
+    }
+}
+
+
+/* SALVAR */
+
+function salvar() {
+
+    localStorage.setItem(
+        "pedidos",
+        JSON.stringify(pedidos)
+    );
+
+}
+
+
+/* ADICIONAR PEDIDO */
+
+function adicionarPedido() {
+
+    const cliente =
+        document.getElementById("cliente").value;
+
+    const instagram =
+        document.getElementById("instagram").value;
+
+    const servico =
+        document.getElementById("servico").value;
+
+    const quantidade =
+        Number(document.getElementById("quantidade").value);
+
+    const valor =
+        document.getElementById("valor").value;
+
+    const status =
+        document.getElementById("status").value;
+
+
+    if (!cliente || !instagram || !quantidade || !valor) {
+
+        alert(
+            "Escolha uma quantidade válida: 1.000, 2.000, 3.000 ou 4.000."
+        );
+
+        return;
+    }
+
+
+    pedidos.push({
+
+        cliente,
+        instagram,
+        servico,
+        quantidade,
+        valor,
+        status
+
+    });
+
+
+    salvar();
+
+
+    document.getElementById("cliente").value = "";
+
+    document.getElementById("instagram").value = "";
+
+    document.getElementById("quantidade").value = "";
+
+    document.getElementById("valor").value = "";
+
+
+    atualizar();
+
+}
+
+
+/* EXCLUIR */
+
+function excluirPedido(index) {
+
+    pedidos.splice(index, 1);
+
+    salvar();
+
+    atualizar();
+
+}
+
+
+/* ATUALIZAR PAINEL */
+
+function atualizar() {
+
+    const lista =
+        document.getElementById("lista");
+
+    lista.innerHTML = "";
+
+
+    pedidos.forEach((pedido, index) => {
+
+        lista.innerHTML += `
+
+        <div class="pedido">
+
+        👤 <strong>${pedido.cliente}</strong><br>
+
+        📸 ${pedido.instagram}<br>
+
+        📦 ${pedido.servico}<br>
+
+        🔢 Quantidade:
+        <span>${pedido.quantidade}</span><br>
+
+        💰 Valor:
+        <span>${pedido.valor}</span><br>
+
+        📌 Status:
+        <span>${pedido.status}</span>
+
+        <button
+        class="excluir"
+        onclick="excluirPedido(${index})">
+
+        EXCLUIR
+
+        </button>
+
+        </div>
+
+        `;
+
+    });
+
+
+    document.getElementById("total").innerText =
+        pedidos.length;
+
+
+    document.getElementById("pendentes").innerText =
+        pedidos.filter(
+            p => p.status === "Pendente"
+        ).length;
+
+
+    document.getElementById("concluidos").innerText =
+        pedidos.filter(
+            p => p.status === "Concluído"
+        ).length;
+
+}
+
+
+atualizar();
+
+</script>
+
+</body>
+</html>
     border-radius: 8px;
     border: none;
     font-size: 15px;
