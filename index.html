@@ -99,18 +99,28 @@ button{
 <option value="Seguidores Brasileiros">Seguidores Brasileiros</option>
 </select>
 
-<select id="quantidade">
-<option value="">Selecione a quantidade</option>
-</select>
+<input
+  id="quantidade"
+  type="number"
+  placeholder="Quantidade"
+  min="1"
+>
 
-<input id="valor" placeholder="Valor R$" readonly>
+<input
+  id="valor"
+  type="text"
+  placeholder="Valor R$"
+  readonly
+>
 
 <select id="status">
 <option value="Pendente">Pendente</option>
 <option value="Concluído">Concluído</option>
 </select>
 
-<button onclick="adicionarPedido()">ADICIONAR PEDIDO</button>
+<button onclick="adicionarPedido()">
+ADICIONAR PEDIDO
+</button>
 
 </div>
 
@@ -124,6 +134,7 @@ button{
 <script>
 
 const precos = {
+
   "Curtidas":{
     1000:10,
     2000:20,
@@ -137,10 +148,90 @@ const precos = {
     3000:39.99,
     4000:49.99
   }
+
 };
 
-let pedidos = JSON.parse(localStorage.getItem("pedidos")) || [];
+let pedidos =
+JSON.parse(localStorage.getItem("pedidos")) || [];
 
-function mostrarQuantidades(){
 
-  const servico = document.getElementById("servico").
+function calcularValor(){
+
+  const servico =
+    document.getElementById("servico").value;
+
+  const quantidade =
+    Number(document.getElementById("quantidade").value);
+
+  const campoValor =
+    document.getElementById("valor");
+
+  if(
+    servico &&
+    quantidade &&
+    precos[servico] &&
+    precos[servico][quantidade] !== undefined
+  ){
+
+    campoValor.value =
+      precos[servico][quantidade].toLocaleString(
+        "pt-BR",
+        {
+          style:"currency",
+          currency:"BRL"
+        }
+      );
+
+  }else{
+
+    campoValor.value = "";
+
+  }
+
+}
+
+
+document.getElementById("servico")
+.addEventListener("change", calcularValor);
+
+
+document.getElementById("quantidade")
+.addEventListener("input", calcularValor);
+
+
+function adicionarPedido(){
+
+  const nome =
+    document.getElementById("nome").value.trim();
+
+  const link =
+    document.getElementById("link").value.trim();
+
+  const servico =
+    document.getElementById("servico").value;
+
+  const quantidade =
+    document.getElementById("quantidade").value;
+
+  const valor =
+    document.getElementById("valor").value;
+
+  const status =
+    document.getElementById("status").value;
+
+
+  if(
+    !nome ||
+    !link ||
+    !servico ||
+    !quantidade ||
+    !valor
+  ){
+
+    alert("Preencha todos os campos.");
+    return;
+
+  }
+
+
+  pedidos
