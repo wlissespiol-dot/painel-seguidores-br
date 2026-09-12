@@ -6,35 +6,68 @@
 <title>Painel Seguidores BR</title>
 
 <style>
-* {
-  box-sizing: border-box;
-  font-family: Arial, sans-serif;
-}
+*{box-sizing:border-box;font-family:Arial,sans-serif}
+body{margin:0;background:#0b0b0b;color:#fff}
+header{background:#151515;padding:20px;text-align:center;border-bottom:1px solid #d4af37}
+header h1{margin:0;color:#d4af37}
+header p{color:#aaa}
+.container{max-width:1000px;margin:auto;padding:20px}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:15px;margin-bottom:25px}
+.card{background:#151515;padding:20px;border-radius:12px;border:1px solid #292929}
+.card h3{color:#aaa;margin-top:0}
+.card strong{font-size:28px;color:#d4af37}
+.box{background:#151515;padding:20px;border-radius:12px;margin-bottom:20px;border:1px solid #292929}
+h2{color:#d4af37}
+input,select,button{width:100%;padding:13px;margin:7px 0;border-radius:8px;border:none;font-size:15px}
+input,select{background:#242424;color:#fff}
+#valor{background:#181818;color:#d4af37;font-weight:bold}
+button{background:#d4af37;color:#000;font-weight:bold;cursor:pointer}
+.pedido{background:#202020;padding:15px;margin-top:10px;border-radius:8px}
+.pedido span{color:#d4af37}
+.whatsapp{background:#25D366;color:#fff}
+.excluir{background:#a83232;color:#fff}
 
-body {
-  margin: 0;
-  background: #0b0b0b;
-  color: white;
+@media(max-width:600px){
+.cards{grid-template-columns:1fr}
 }
+</style>
+</head>
 
-header {
-  background: #151515;
-  padding: 20px;
-  text-align: center;
-  border-bottom: 1px solid #d4af37;
-}
+<body>
 
-header h1 {
-  margin: 0;
-  color: #d4af37;
-}
+<header>
+<h1>👑 PAINEL SEGUIDORES BR</h1>
+<p>Gerenciamento de pedidos</p>
+</header>
 
-header p {
-  color: #aaa;
-}
+<div class="container">
 
-.container {
-  max-width: 1000px;
+<div class="cards">
+<div class="card">
+<h3>Pedidos</h3>
+<strong id="total">0</strong>
+</div>
+
+<div class="card">
+<h3>Pendentes</h3>
+<strong id="pendentes">0</strong>
+</div>
+
+<div class="card">
+<h3>Concluídos</h3>
+<strong id="concluidos">0</strong>
+</div>
+</div>
+
+<div class="box">
+
+<h2>➕ Novo Pedido</h2>
+
+<input id="cliente" placeholder="Nome do cliente">
+
+<input id="instagram" placeholder="Link do Instagram">
+
+<select id="servico" onchange="mostrarQuantidades()">  max-width: 1000px;
   margin: auto;
   padding: 20px;
 }
