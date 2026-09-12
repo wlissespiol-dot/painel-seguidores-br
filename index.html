@@ -6,68 +6,67 @@
 <title>Painel Seguidores BR</title>
 
 <style>
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #0d0d0d;
-  color: white;
-  padding: 20px;
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#0d0d0d;
+  color:white;
+  padding:20px;
 }
 
-.container {
-  max-width: 700px;
-  margin: auto;
+.container{
+  max-width:700px;
+  margin:auto;
 }
 
-h1 {
-  text-align: center;
+h1{
+  text-align:center;
 }
 
-.card {
-  background: #181818;
-  padding: 18px;
-  border-radius: 12px;
-  margin-bottom: 20px;
+.card{
+  background:#181818;
+  padding:18px;
+  border-radius:12px;
+  margin-bottom:20px;
 }
 
-input, select, button {
-  width: 100%;
-  box-sizing: border-box;
-  padding: 12px;
-  margin-top: 8px;
-  margin-bottom: 12px;
-  border-radius: 8px;
-  border: none;
-  font-size: 16px;
+input,select,button{
+  width:100%;
+  box-sizing:border-box;
+  padding:12px;
+  margin-top:8px;
+  margin-bottom:12px;
+  border-radius:8px;
+  border:none;
+  font-size:16px;
 }
 
-input, select {
-  background: #292929;
-  color: white;
+input,select{
+  background:#292929;
+  color:white;
 }
 
-button {
-  background: #d4af37;
-  color: #000;
-  font-weight: bold;
-  cursor: pointer;
+button{
+  background:#d4af37;
+  color:#000;
+  font-weight:bold;
 }
 
-.pedido {
-  background: #222;
-  padding: 15px;
-  border-radius: 10px;
-  margin-top: 12px;
+.pedido{
+  background:#222;
+  padding:15px;
+  border-radius:10px;
+  margin-top:12px;
 }
 
-.whatsapp {
-  background: #25D366;
-  color: white;
+.whatsapp{
+  background:#25D366;
+  color:white;
 }
 
-.excluir {
-  background: #b00020;
-  color: white;
+.excluir{
+  background:#b00020;
+  color:white;
 }
 </style>
 </head>
@@ -80,21 +79,68 @@ button {
 <p style="text-align:center;">Gerenciamento de pedidos</p>
 
 <div class="card">
-  <h2>📊 Resumo</h2>
-  <p>Pedidos: <strong id="total">0</strong></p>
-  <p>Pendentes: <strong id="pendentes">0</strong></p>
-  <p>Concluídos: <strong id="concluidos">0</strong></p>
+<h2>📊 Resumo</h2>
+<p>Pedidos: <strong id="total">0</strong></p>
+<p>Pendentes: <strong id="pendentes">0</strong></p>
+<p>Concluídos: <strong id="concluidos">0</strong></p>
 </div>
 
 <div class="card">
 
 <h2>➕ Novo Pedido</h2>
 
-<input id="nome" type="text" placeholder="Nome do cliente">
+<input id="nome" placeholder="Nome do cliente">
 
-<input id="link" type="text" placeholder="Link do Instagram">
+<input id="link" placeholder="Link do Instagram">
 
 <select id="servico">
-  <option value="">Selecione o serviço</option>
-  <option value="Curtidas">Curtidas</option>
-  <option value="
+<option value="">Selecione o serviço</option>
+<option value="Curtidas">Curtidas</option>
+<option value="Seguidores Brasileiros">Seguidores Brasileiros</option>
+</select>
+
+<select id="quantidade">
+<option value="">Selecione a quantidade</option>
+</select>
+
+<input id="valor" placeholder="Valor R$" readonly>
+
+<select id="status">
+<option value="Pendente">Pendente</option>
+<option value="Concluído">Concluído</option>
+</select>
+
+<button onclick="adicionarPedido()">ADICIONAR PEDIDO</button>
+
+</div>
+
+<div class="card">
+<h2>📋 Pedidos</h2>
+<div id="lista"></div>
+</div>
+
+</div>
+
+<script>
+
+const precos = {
+  "Curtidas":{
+    1000:10,
+    2000:20,
+    3000:30,
+    4000:40
+  },
+
+  "Seguidores Brasileiros":{
+    1000:19.99,
+    2000:29.99,
+    3000:39.99,
+    4000:49.99
+  }
+};
+
+let pedidos = JSON.parse(localStorage.getItem("pedidos")) || [];
+
+function mostrarQuantidades(){
+
+  const servico = document.getElementById("servico").
